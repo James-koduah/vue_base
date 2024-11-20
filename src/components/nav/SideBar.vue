@@ -70,6 +70,7 @@ export default {
     height: 100vh;
     top: 0;
     width: fit-content;
+    background: var(--oynx);
     color: var(--cool-white);
     flex-shrink: 0;
     z-index: 100;
