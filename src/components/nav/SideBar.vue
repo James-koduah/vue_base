@@ -1,48 +1,86 @@
 <template>
-    <div id="sidebar">
-        <div id="sidebarMini" :style="{ marginLeft: expandSideBar ? '0%' : '-65px' }">
-            <div class="miniItem" @click="expandSideBar = !expandSideBar"><SvgIcons icon="expandRight" color="white" /></div>
+    <div
+        id="sidebar"
+        :class="['sidebar', expandSideBar ? 'sidebar-expanded' : 'sidebar-collapsed']"
+    >
+        <!-- Toggle Button -->
+        <div class="sidebar-toggle">
+            <button @click="expandSideBar = !expandSideBar" class="toggle-btn">
+                <SvgIcons :icon="expandSideBar ? 'expandLeft' : 'expandRight'" color="white" />
+            </button>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
             <div class="group">
-                <div class="miniItem"><SvgIcons icon="dashboard" color="white" /></div>
-            </div>
-            <div class="group">
-                <div class="miniItem"><SvgIcons icon="book" color="white" /></div>
-                <div class="miniItem"><SvgIcons icon="homework" color="white" /></div>
-                <div class="miniItem"><SvgIcons icon="studentResults" color="white" /></div>
-            </div>
-            <div class="group">
-                <div class="miniItem"><SvgIcons icon="calender" color="white" /></div>
-                <div class="miniItem"><SvgIcons icon="calenderEvent" color="white" /></div>
-                <div class="miniItem"><SvgIcons icon="message" color="white" /></div>
-            </div>
-            <div class="group">
-                <div class="miniItem"><SvgIcons icon="person" color="white" /></div>
-                <div class="miniItem"><SvgIcons icon="settings" color="white" /></div>
+                <div class="nav-item">
+                    <div class="icon-wrap">
+                        <SvgIcons icon="dashboard" color="white" />
+                    </div>
+                    <span v-if="expandSideBar" class="nav-label">Dashboard</span>
+                </div>
             </div>
 
-        </div>
-        <div id="sidebarMax" :style="{ left: expandSideBar ? '-100%' : '0%' }">
-            <div class="maxItem" @click="expandSideBar = !expandSideBar"><SvgIcons icon="expandLeft" color="white" /></div>
             <div class="group">
-                <div class="maxItem"> <SvgIcons icon="dashboard" color="white" /> <p>Dashboard</p></div>
+                <div class="nav-item">
+                    <div class="icon-wrap">
+                        <SvgIcons icon="book" color="white" />
+                    </div>
+                    <span v-if="expandSideBar" class="nav-label">Courses</span>
+                </div>
+                <div class="nav-item">
+                    <div class="icon-wrap">
+                        <SvgIcons icon="homework" color="white" />
+                    </div>
+                    <span v-if="expandSideBar" class="nav-label">Assignments</span>
+                </div>
+                <div class="nav-item">
+                    <div class="icon-wrap">
+                        <SvgIcons icon="studentResults" color="white" />
+                    </div>
+                    <span v-if="expandSideBar" class="nav-label">Results</span>
+                </div>
             </div>
+
             <div class="group">
-                <div class="maxItem"> <SvgIcons icon="book" color="white" /><p>Courses</p></div>
-                <div class="maxItem"> <SvgIcons icon="homework" color="white" /><p>Assignments</p></div>
-                <div class="maxItem"> <SvgIcons icon="studentResults" color="white" /><p>Results</p></div>
+                <div class="nav-item">
+                    <div class="icon-wrap">
+                        <SvgIcons icon="calender" color="white" />
+                    </div>
+                    <span v-if="expandSideBar" class="nav-label">Calendar</span>
+                </div>
+                <div class="nav-item">
+                    <div class="icon-wrap">
+                        <SvgIcons icon="calenderEvent" color="white" />
+                    </div>
+                    <span v-if="expandSideBar" class="nav-label">Events</span>
+                </div>
+                <div class="nav-item">
+                    <div class="icon-wrap">
+                        <SvgIcons icon="message" color="white" />
+                    </div>
+                    <span v-if="expandSideBar" class="nav-label">Messages</span>
+                </div>
             </div>
+
             <div class="group">
-                <div class="maxItem"> <SvgIcons icon="calender" color="white" /><p>Calender</p></div>
-                <div class="maxItem"> <SvgIcons icon="calenderEvent" color="white" /><p>Events</p></div>
-                <div class="maxItem"> <SvgIcons icon="message" color="white" /><p>Messages</p></div>
+                <div class="nav-item">
+                    <div class="icon-wrap">
+                        <SvgIcons icon="person" color="white" />
+                    </div>
+                    <span v-if="expandSideBar" class="nav-label">Profile</span>
+                </div>
+                <div class="nav-item">
+                    <div class="icon-wrap">
+                        <SvgIcons icon="settings" color="white" />
+                    </div>
+                    <span v-if="expandSideBar" class="nav-label">Settings</span>
+                </div>
             </div>
-            <div class="group">
-                <div class="maxItem"> <SvgIcons icon="person" color="white" /><p>Profile</p></div>
-                <div class="maxItem"> <SvgIcons icon="settings" color="white" /><p>Settings</p></div>
-            </div>
-        </div>
+        </nav>
     </div>
 </template>
+
 <script>
 import SvgIcons from '../utils/SvgIcons.vue';
 
@@ -61,94 +99,100 @@ export default {
             this.currentRoute = to.path
         }
     }
-
 }
 </script>
+
 <style scoped>
-#sidebar {
-    position: sticky;
-    height: 100vh;
-    top: 0;
-    width: fit-content;
-    background: var(--oynx);
-    color: var(--cool-white);
-    flex-shrink: 0;
-    z-index: 100;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-#sidebar::-webkit-scrollbar{
-    width: 3px;
-}
-#sidebar::-webkit-scrollbar-track{
-    background-color: transparent
-}
-#sidebar::-webkit-scrollbar-thumb{
-    background-color: var(--oynx)
-}
-
-#sidebarMini {
-    position: relative;
-    width: 50px;
-    height: fit-content;
-    min-height: 100vh;
-    padding: 5px 5px;
-    background-color: var(--oynx);
-    transition: .3s;
-    z-index: 101;
-}
-
-.group {
-    padding: 15px 0;
-    border-bottom: 1px var(--text-light) solid;
-}
-.group:last-of-type{
-    border: none;
-}
-
-.miniItem {
-    width: 100%;
-    height: 45px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 4px 0;
-    --svg-width: 25px;
-    --svg-height: 25px;
-    cursor: pointer;
-}
-.miniItem:hover{
-    background: var(--charcoal)
-}
-
-
-
-#sidebarMax {
+.sidebar {
     position: fixed;
     top: 0;
     left: 0;
-    width: 200px;
-    height: 100%;
-    padding: 5px;
-    background-color: var(--oynx);
-    transition: .7s cubic-bezier(1, 0, 0, 0.9);
-    z-index: 102;
-}
-.maxItem{
-    width: calc(100% - 20px);
-    height: 45px;
+    height: 100vh;
+    background: var(--oynx);
+    color: var(--cool-white);
+    z-index: 100;
     display: flex;
-    align-items: center;
-    padding-left: 20px;
-    margin: 4px 0;
-    --svg-width: 25px;
-    --svg-height: 25px;
-    --svg-margin: 0 20px 0 0;
-    font-size: 3em;
-    cursor: pointer;
+    flex-direction: column;
+    transition: width 0.3s cubic-bezier(0.4,0,0.2,1);
+    overflow: hidden;
 }
-.maxItem:hover{
-    background: var(--charcoal)
+.sidebar-expanded {
+    width: 220px;
+}
+.sidebar-collapsed {
+    width: 50px;
 }
 
+.sidebar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 56px;
+    min-height: 56px;
+    border-bottom: 1px solid var(--text-light);
+    --svg-width: 25px;
+    --svg-height: 25px;
+    font-size: 3em;
+}
+.toggle-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    width: 100%;
+    padding: 0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+.toggle-btn:hover {
+    background: var(--charcoal);
+}
+
+.sidebar-nav {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding-top: 8px;
+}
+.group {
+    padding: 8px 0;
+    border-bottom: 1px var(--text-light) solid;
+}
+.group:last-of-type {
+    border: none;
+}
+.nav-item {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    margin: 4px 0;
+    padding: 0 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, padding 0.3s;
+    position: relative;
+}
+.nav-item:hover {
+    background: var(--charcoal);
+}
+.icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    width: 32px;
+    height: 32px;
+    --svg-width: 20px;
+    --svg-height: 20px;
+    font-size: 3em;
+}
+.nav-label {
+    margin-left: 16px;
+    white-space: nowrap;
+    font-size: 1rem;
+    color: var(--cool-white);
+    transition: opacity 0.2s;
+}
 </style>
