@@ -1,7 +1,14 @@
 <template>
   <main id="main">
-    <SideBar />
-    <div id="shell">
+    <!-- Mobile Menu Button -->
+    <button v-if="isMobile" @click="toggleMobileSidebar" class="mobile-menu-btn">
+      <span class="menu-icon"></span>
+      <span class="menu-icon"></span>
+      <span class="menu-icon"></span>
+    </button>
+    
+    <SideBar ref="sidebar" @sidebar-toggle="handleSidebarToggle" />
+    <div id="shell" :class="shellClass">
       <RouterView />
     </div>
   </main>
@@ -14,6 +21,39 @@ export default {
   name: 'App',
   components: {
     SideBar
+  },
+  data() {
+    return {
+      sidebarExpanded: true,
+      isMobile: false
+    }
+  },
+  computed: {
+    shellClass() {
+      return {
+        'shell-desktop-expanded': !this.isMobile && this.sidebarExpanded,
+        'shell-desktop-collapsed': !this.isMobile && !this.sidebarExpanded,
+        'shell-mobile': this.isMobile
+      }
+    }
+  },
+  mounted() {
+    this.checkMobile();
+    window.addEventListener('resize', this.checkMobile);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.checkMobile);
+  },
+  methods: {
+    handleSidebarToggle(expanded) {
+      this.sidebarExpanded = expanded;
+    },
+    toggleMobileSidebar() {
+      this.$refs.sidebar.toggleSidebar();
+    },
+    checkMobile() {
+      this.isMobile = window.innerWidth < 650;
+    }
   }
 }
 </script>
@@ -94,10 +134,71 @@ body{
 }
 
 #shell{
-  width: calc(100% - 60px);
-  padding: 30px;
   min-height: 100vh;
   background: var(--cool-white);
+  padding: 30px;
+  transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
+/* Desktop - Expanded Sidebar */
+.shell-desktop-expanded {
+  margin-left: 220px;
+  width: calc(100vw - 220px);
+}
+
+/* Desktop - Collapsed Sidebar */
+.shell-desktop-collapsed {
+  margin-left: 60px;
+  width: calc(100vw - 60px);
+}
+
+/* Mobile - Full width with sidebar overlay */
+.shell-mobile {
+  margin-left: 0;
+  width: 100vw;
+}
+
+/* Mobile Responsive */
+@media (max-width: 650px) {
+  #shell {
+    padding: 20px 15px;
+  }
+  
+  .shell-mobile {
+    width: 100%;
+  }
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: calc(var(--z-fixed) + 1);
+  background: var(--deep-blue);
+  border: none;
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: var(--shadow);
+}
+
+.mobile-menu-btn:hover {
+  background: var(--charcoal);
+}
+
+.menu-icon {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: white;
+  border-radius: 1px;
+  transition: transform 0.3s ease;
+}
 </style>
